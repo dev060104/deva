@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, Brain, Globe, Briefcase, BarChart3, Settings, Flame, BookOpen } from 'lucide-react';
+import { Sparkles, Brain, Globe, Briefcase, BarChart3, Settings, Flame, BookOpen, Activity } from 'lucide-react';
 import { getUserStats } from '@/lib/storage';
 import SettingsModal from './SettingsModal';
 
@@ -18,7 +18,8 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { href: '/', label: 'Explore', icon: Brain },
+    { href: '/', label: 'Portal', icon: Brain },
+    { href: '/earthquake', label: '🌋 Earth Predictor', icon: Activity },
     { href: '/quiz', label: 'Play Quiz', icon: BookOpen },
     { href: '/wikipedia', label: 'Wiki Engine', icon: Globe },
     { href: '/interview', label: 'Interview Prep', icon: Briefcase },
@@ -40,10 +41,10 @@ export default function Navbar() {
             </div>
             <div>
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-300">
-                QuizMaster<span className="text-indigo-400">.AI</span>
+                AI Knowledge<span className="text-indigo-400">Hub</span>
               </span>
               <span className="block text-[10px] text-slate-400 -mt-1 font-medium tracking-wider uppercase">
-                Universal Knowledge
+                QuizMaster & SeismoAI
               </span>
             </div>
           </Link>
@@ -53,14 +54,19 @@ export default function Navbar() {
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
+              const isEarthquake = link.href === '/earthquake';
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/30'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                      ? isEarthquake 
+                        ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-amber-600/30'
+                        : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/30'
+                      : isEarthquake
+                        ? 'text-amber-400 hover:bg-amber-500/10'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />

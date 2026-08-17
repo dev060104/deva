@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/stats/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__02fn-vg._.js")
+R.c("server/chunks/ssr/1oxs_next_dist_1-bswam._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__092_h4l._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__18nmiwt._.js")
+R.c("server/chunks/ssr/quizmaster-ai_src_1q_hxpv._.js")
+R.c("server/chunks/ssr/1oxs_next_dist_client_components_1hve4be._.js")
+R.c("server/chunks/ssr/1oxs_next_dist_client_components_builtin_forbidden_0zjc0vi.js")
+R.c("server/chunks/ssr/1oxs_next_dist_client_components_builtin_unauthorized_1gy2qhn.js")
+R.c("server/chunks/ssr/1oxs_next_dist_client_components_builtin_global-error_1fao7_n.js")
+R.c("server/chunks/ssr/quizmaster-ai__next-internal_server_app_stats_page_actions_1-hr4o3.js")
+R.m(13636)
+module.exports=R.m(13636).exports

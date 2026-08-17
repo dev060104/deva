@@ -1,0 +1,12 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_not-found/page.js")
+R.c("server/chunks/ssr/0k0n_next_dist_1w2vt8p._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0kytai3._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__05ld_5f._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__02taqlj._.js")
+R.c("server/chunks/ssr/seismo-earthquake_src_app_layout_tsx_1o9w-f2._.js")
+R.c("server/chunks/ssr/0k0n_next_dist_client_components_1rp_z_d._.js")
+R.c("server/chunks/ssr/0k0n_next_dist_client_components_builtin_forbidden_18yojcm.js")
+R.c("server/chunks/ssr/0k0n_next_dist_client_components_builtin_unauthorized_0st_vas.js")
+R.c("server/chunks/ssr/seismo-earthquake__next-internal_server_app__not-found_page_actions_1lwqof9.js")
+R.m(76690)
+module.exports=R.m(76690).exports

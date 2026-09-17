@@ -49,6 +49,7 @@ export default function ShareGiftModal({
   const [theme, setTheme] = useState<BirthdayTheme>(initialTheme);
   const [realm, setRealm] = useState<CelebrationRealm>(initialRealm);
   const [gift, setGift] = useState<GiftType>(initialGift);
+  const [voiceFeeling, setVoiceFeeling] = useState<string>('for-her-radiant');
   const [isCopied, setIsCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
 
@@ -74,10 +75,11 @@ export default function ShareGiftModal({
     if (theme) params.set('theme', theme);
     if (realm) params.set('bg', realm);
     if (gift) params.set('gift', gift);
+    if (voiceFeeling) params.set('voice', voiceFeeling);
     if (message) params.set('msg', message.trim());
 
     setShareUrl(`${origin}/?${params.toString()}`);
-  }, [recipient, sender, age, theme, realm, gift, message]);
+  }, [recipient, sender, age, theme, realm, gift, voiceFeeling, message]);
 
   if (!isOpen) return null;
 
@@ -278,6 +280,45 @@ export default function ShareGiftModal({
                 >
                   <span>{r.icon}</span>
                   <span className="truncate">{r.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-slate-400 font-medium text-xs sm:text-sm">
+                🎙️ Background Spoken Voiceover Feeling (For Him / Her)
+              </label>
+              <span className="text-[10px] text-pink-400 font-mono">HD Spoken Audio</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[
+                { id: 'for-her-radiant', label: '🌸 For Her: Radiant Love', desc: 'Warm, tender & romantic cadence' },
+                { id: 'for-her-queen', label: '👑 For Her: Unstoppable Queen', desc: 'Empowering & elegant praise' },
+                { id: 'for-him-champion', label: '🌟 For Him: Inspiring Champion', desc: 'Strong, deep & uplifting' },
+                { id: 'for-him-brotherhood', label: '🥂 For Him: True Legend', desc: 'Loyal, warm & heartfelt' },
+                { id: 'poetic-natural', label: '🌿 Serene Nature Blessing', desc: 'Tranquil & poetic peace' },
+                { id: 'joyful-cheer', label: '🎉 Joyful Celebration', desc: 'Exciting, loud & fun' },
+              ].map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => {
+                    setVoiceFeeling(v.id);
+                    birthdayAudio.playChime(800, 0.15);
+                  }}
+                  className={`p-2.5 rounded-xl border text-xs text-left transition-all cursor-pointer ${
+                    voiceFeeling === v.id
+                      ? 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-pink-400 text-white shadow-md'
+                      : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <div className="font-bold flex items-center justify-between">
+                    <span>{v.label}</span>
+                    {voiceFeeling === v.id && <span className="text-pink-400 text-[10px] font-mono">✓ Active</span>}
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{v.desc}</p>
                 </button>
               ))}
             </div>

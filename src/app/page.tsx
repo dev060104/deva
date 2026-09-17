@@ -4,11 +4,13 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { 
   Sparkles, Gift, Share2, Heart, Award, 
-  Flame, Music, RefreshCw, Send, Check, Printer, FileText, ArrowRight
+  Flame, Music, RefreshCw, Send, Check, Printer, FileText, ArrowRight,
+  Headphones, Mic, Volume2
 } from 'lucide-react';
 import Birthday3DScene, { BirthdayTheme, GiftType, CelebrationRealm, REALM_CONFIGS } from '@/components/Birthday3DScene';
 import TrendingWishesSection from '@/components/TrendingWishesSection';
 import Interactive3DCard from '@/components/Interactive3DCard';
+import VoiceoverStudio, { EMOTIONAL_PRESETS } from '@/components/VoiceoverStudio';
 import ShareGiftModal from '@/components/ShareGiftModal';
 import GreetingCardModal from '@/components/GreetingCardModal';
 import confetti from 'canvas-confetti';
@@ -28,6 +30,8 @@ function BirthdayHomeContent() {
     'May your year ahead be as radiant, unstoppable, and joyful as your smile! 🎂✨'
   );
 
+  const [activeVoicePreset, setActiveVoicePreset] = useState<string>('for-her-radiant');
+  const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [hasReceivedSharedLink, setHasReceivedSharedLink] = useState(false);
@@ -39,6 +43,7 @@ function BirthdayHomeContent() {
     const themeParam = searchParams.get('theme') as BirthdayTheme | null;
     const bgParam = (searchParams.get('bg') || searchParams.get('realm')) as CelebrationRealm | null;
     const giftParam = searchParams.get('gift') as GiftType | null;
+    const voiceParam = searchParams.get('voice');
     const msgParam = searchParams.get('msg');
 
     if (toParam) {
@@ -56,6 +61,9 @@ function BirthdayHomeContent() {
     if (giftParam && ['cake', 'diamond', 'trophy', 'heart'].includes(giftParam)) {
       setGiftType(giftParam);
     }
+    if (voiceParam) {
+      setActiveVoicePreset(voiceParam);
+    }
     if (msgParam) setSecretMessage(msgParam);
 
     if (toParam || fromParam) {
@@ -64,6 +72,51 @@ function BirthdayHomeContent() {
       }, 500);
     }
   }, [searchParams]);
+
+  const handlePlayVoiceover = (presetId?: string) => {
+    const id = presetId || activeVoicePreset;
+    const preset = EMOTIONAL_PRESETS.find((p) => p.id === id) || EMOTIONAL_PRESETS[0];
+
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    if (isVoicePlaying) {
+      window.speechSynthesis.cancel();
+      setIsVoicePlaying(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const script = preset.script
+      .replace(/Sophia/g, recipient || 'Sophia')
+      .replace(/friend/g, recipient || 'friend');
+
+    const utterance = new SpeechSynthesisUtterance(script);
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(
+      (v) =>
+        (preset.voiceGender === 'female'
+          ? /female|samantha|karen|moira|google us english|zira/i.test(v.name)
+          : /male|daniel|alex|george|david/i.test(v.name)) &&
+        v.lang.startsWith('en')
+    ) || voices[0];
+
+    if (voice) utterance.voice = voice;
+    utterance.pitch = preset.voiceGender === 'female' ? 1.05 : 0.94;
+    utterance.rate = 0.92;
+
+    birthdayAudio.playChime(660, 0.3);
+    birthdayAudio.playNatureChime(realm);
+
+    utterance.onstart = () => setIsVoicePlaying(true);
+    utterance.onend = () => {
+      setIsVoicePlaying(false);
+      birthdayAudio.playChime(880, 0.3);
+    };
+    utterance.onerror = () => setIsVoicePlaying(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   const handleSelectWishFor3D = (wishText: string) => {
     setSecretMessage(wishText);
@@ -115,12 +168,25 @@ function BirthdayHomeContent() {
               </p>
             </div>
           </div>
-          <button
-            onClick={() => setIsShareModalOpen(true)}
-            className="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-bold transition-all whitespace-nowrap cursor-pointer hover:scale-105"
-          >
-            Create One for a Friend 🎁
-          </button>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5">
+            <button
+              onClick={() => handlePlayVoiceover()}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 shadow-lg ${
+                isVoicePlaying
+                  ? 'bg-rose-600 text-white animate-pulse'
+                  : 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 text-white hover:scale-105'
+              }`}
+            >
+              <Headphones className="w-3.5 h-3.5" />
+              <span>{isVoicePlaying ? 'Pause Voiceover' : 'Play Voiceover Note 🎙️'}</span>
+            </button>
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              className="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-bold transition-all whitespace-nowrap cursor-pointer hover:scale-105"
+            >
+              Create One for a Friend 🎁
+            </button>
+          </div>
         </div>
       )}
 
@@ -258,6 +324,17 @@ function BirthdayHomeContent() {
         message={secretMessage}
         themeName={theme.replace('-', ' ')}
         onUpdateMessage={(newMsg) => setSecretMessage(newMsg)}
+      />
+
+      {/* Voiceover Recording & Emotional Feelings Studio */}
+      <VoiceoverStudio
+        recipientName={recipient}
+        senderName={sender}
+        onVoiceReady={(data) => {
+          if (data.presetId) {
+            setActiveVoicePreset(data.presetId);
+          }
+        }}
       />
 
       {/* Trending Wishes Vault */}

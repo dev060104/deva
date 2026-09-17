@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Heart, Crown, Award, Printer, Copy, Check, 
-  RotateCcw, Gift, Edit3, Image as ImageIcon, Smile
+  RotateCcw, Gift, Edit3, Image as ImageIcon, Smile,
+  Mic, Headphones, Volume2, Play, Pause, Radio
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { birthdayAudio } from '@/lib/birthdayAudio';
+import { EMOTIONAL_PRESETS } from '@/components/VoiceoverStudio';
 
 interface Interactive3DCardProps {
   recipientName: string;
@@ -31,6 +33,44 @@ export default function Interactive3DCard({
   const [customMsg, setCustomMsg] = useState(message);
   const [activeStickers, setActiveStickers] = useState<string[]>(['🎂', '✨', '👑']);
   const [cardTheme, setCardTheme] = useState<'gold' | 'rose' | 'cosmic' | 'cyber'>('gold');
+  const [isVoicePlaying, setIsVoicePlaying] = useState(false);
+
+  const handlePlayVoice = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      birthdayAudio.playChime(800, 0.4);
+      return;
+    }
+
+    if (isVoicePlaying) {
+      window.speechSynthesis.cancel();
+      setIsVoicePlaying(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const voiceScript = `Happy Birthday ${recipientName || 'Sophia'}! ${customMsg}. With all my love, from ${senderName || 'your friend'}.`;
+    const utterance = new SpeechSynthesisUtterance(voiceScript);
+    
+    const voices = window.speechSynthesis.getVoices();
+    const naturalVoice = voices.find(v => /female|samantha|karen|moira|google us english|zira/i.test(v.name) && v.lang.startsWith('en')) || voices[0];
+    if (naturalVoice) utterance.voice = naturalVoice;
+
+    utterance.pitch = 1.05;
+    utterance.rate = 0.92;
+
+    birthdayAudio.playChime(660, 0.3);
+    birthdayAudio.playNatureChime('water');
+
+    utterance.onstart = () => setIsVoicePlaying(true);
+    utterance.onend = () => {
+      setIsVoicePlaying(false);
+      birthdayAudio.playChime(880, 0.3);
+    };
+    utterance.onerror = () => setIsVoicePlaying(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   const cardStyles = {
     gold: {
@@ -209,6 +249,49 @@ export default function Interactive3DCard({
               )}
             </div>
 
+            {/* Voiceover Spoken Note Pill */}
+            <div 
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePlayVoice();
+              }}
+              className="p-2.5 rounded-xl bg-pink-950/40 hover:bg-pink-950/60 border border-pink-500/30 flex items-center justify-between gap-2 cursor-pointer transition-all hover:scale-[1.01]"
+            >
+              <div className="flex items-center gap-2.5">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlayVoice();
+                  }}
+                  className={`p-2 rounded-lg text-white transition-all cursor-pointer shadow-md ${
+                    isVoicePlaying ? 'bg-rose-600 animate-pulse' : 'bg-pink-600 hover:bg-pink-500'
+                  }`}
+                  title={isVoicePlaying ? 'Pause Voiceover' : 'Play Voiceover'}
+                >
+                  {isVoicePlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                </button>
+                <div>
+                  <span className="text-[10px] uppercase font-mono font-bold text-pink-300 block flex items-center gap-1">
+                    <Headphones className="w-3 h-3" /> Voiceover Note
+                  </span>
+                  <span className="text-[11px] text-slate-300 font-medium">
+                    {isVoicePlaying ? 'Speaking feeling...' : `Listen to ${recipientName}'s wish`}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-0.5 pr-1">
+                {[10, 22, 16, 26, 12, 20].map((h, i) => (
+                  <span
+                    key={i}
+                    className={`w-1 rounded-full bg-pink-400 transition-all ${
+                      isVoicePlaying ? 'animate-bounce' : 'opacity-40'
+                    }`}
+                    style={{ height: `${h}px`, animationDelay: `${i * 0.12}s` }}
+                  />
+                ))}
+              </div>
+            </div>
+
             {/* Letter Footer */}
             <div className="pt-3 border-t border-amber-500/20 flex items-center justify-between text-xs">
               <div>
@@ -339,6 +422,18 @@ export default function Interactive3DCard({
           className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 via-pink-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 text-white text-xs sm:text-sm font-bold shadow-xl shadow-pink-500/25 hover:scale-105 active:scale-95 transition-all cursor-pointer"
         >
           <span>{isOpen ? 'Close Card ✉️' : 'Open 3D Card 💌'}</span>
+        </button>
+
+        <button
+          onClick={handlePlayVoice}
+          className={`flex items-center gap-1.5 px-4 py-2.5 rounded-2xl border text-xs font-bold transition-all cursor-pointer ${
+            isVoicePlaying
+              ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 animate-pulse'
+              : 'bg-pink-500/10 hover:bg-pink-500/20 text-pink-300 border-pink-500/30'
+          }`}
+        >
+          {isVoicePlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+          <span>{isVoicePlaying ? 'Stop Voiceover' : '🎙️ Play Voice Note'}</span>
         </button>
 
         <button

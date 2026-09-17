@@ -8,3 +8,5 @@ out/
 .env*
 .vercel
 .snapshots/
+AGENTS.md
+CLAUDE.md

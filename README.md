@@ -14,11 +14,25 @@ Built with **Next.js 16 (Turbopack)**, **Three.js WebGL**, **React 19**, and **T
 - **Unwrapping Sequence**: Click the box to watch ribbons dissolve into golden sparkle particles, the lid pop and spin in mid-air, and the surprise emerge with celebratory sound effects and full-screen confetti showers.
 
 ### 🎂 2. Tiered 3D Birthday Cake & Blowable Candles
-- **Detailed 3D Cake**: Vanilla cream and strawberry frosted tiers with decorative pearls and piping.
+- **Detailed 3D Cake**: Multi-tier frosted cake with creamy piping, golden sprinkles, and decorative sugar pearls.
 - **Procedural Candle Flames**: Real-time flickering golden point lights and animated flame meshes.
-- **Interactive "Blow Candles" Action**: Click or blow to extinguish the flames with realistic drifting smoke puff particles, trigger a triumphant celebratory fanfare, and ignite 3D fireworks!
+- **Interactive "Blow Candles" Action**: Extinguish the flames with realistic drifting smoke puff particles, trigger a triumphant celebratory fanfare, and ignite 3D fireworks!
 
-### 🎆 3. 3D Particle Fireworks & Floating Balloons
+### 🔪 3. Interactive 3D Cake Cutting Ceremony (NEW)
+- **Floating Celebration Knife**: An ornate golden ceremonial knife hovers beside the cake with smooth idle animation.
+- **Slice Down Animation**: Click "Cut Birthday Cake" to watch the knife perform a realistic downward diagonal slicing motion with custom swoosh sound effects (`playCakeSlice()`).
+- **Separable Wedge Slice**: A wedge slice detaches from the main tier and smoothly slides forward onto an ornate golden dessert plate!
+- **Celebration Trigger**: Triggers cheering, party fanfare, stardust sparkles, and full-screen cascading confetti.
+
+### 💌 4. Interactive 3D Folding Greeting Card (NEW)
+- **180° Book-Fold Hinge**: Realistic 3D perspective fold that opens and closes with smooth CSS 3D transforms (`perspective: 1200px`).
+- **Luxury Outer Cover**: Deep royal navy velvet with embossed gold filigree, ribbon bow, and shimmering wax seal.
+- **Polaroid Keepsake Photo Frame**: Customizable photo upload/preview frame inside the card with vintage washi tape.
+- **Interactive Sticker Tray**: Place decorative stickers (🎈, 👑, 💖, 🎂, 🍾, 🚀) onto your personalized card.
+- **Live Editable Message**: Type recipient name, heartfelt custom letter, and sender signature in real-time.
+- **Print & Story Ready**: High-resolution print styling and 1-click clipboard copy for Instagram, WhatsApp, and physical keepsakes.
+
+### 🎆 5. 3D Particle Fireworks & Floating Balloons
 - **Radial 3D Fireworks**: Fireworks that launch into the sky and explode into hundred-particle spherical bursts with gravity deceleration and stardust trails.
 - **Floating Metallic Balloons**: Tear-shaped 3D balloons bobbing with simulated wind turbulence and realistic strings.
 
@@ -120,12 +134,24 @@ git push -u origin main
 
 This project is configured with `vercel.json` for zero-configuration deployment on Vercel.
 
-### Option A: Deploy via Vercel Dashboard (Recommended)
-1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and log in.
-2. Click **"Add New..."** -> **"Project"**.
-3. Select your GitHub repository (`birthday-3d-magic`).
-4. Framework Preset: **Next.js** (Auto-detected).
-5. Click **Deploy**. Vercel will build and deploy your application in under 60 seconds with a free HTTPS URL!
+### Option A: Deploy via Vercel Dashboard (1-Click)
+1. Go to [vercel.com/new](https://vercel.com/new) and log in.
+2. Under **"Import Git Repository"**, select **`dev060104/deva`**.
+3. In the project configuration:
+   - **Branch**: Set to `birthday-magic` (where Birthday Magic 3D is pushed).
+   - **Framework Preset**: **Next.js** (automatically detected).
+   - **Root Directory**: `./` (leave default).
+4. Click **Deploy**. Vercel will automatically build with Turbopack and deploy to your custom `*.vercel.app` URL with free SSL!
+
+### Option B: Deploy to a Dedicated GitHub Repo (`birthday-3d-magic`)
+If you prefer a standalone GitHub repository name:
+1. Create a new empty repository at [github.com/new](https://github.com/new) named `birthday-3d-magic`.
+2. Push your local project:
+   ```bash
+   cd /Users/manchigaraladevadas/birthday-3d-magic
+   DEVELOPER_DIR=/Library/Developer/CommandLineTools git push -u origin main
+   ```
+3. Import `dev060104/birthday-3d-magic` into Vercel and click **Deploy**.
 
 ### Option B: Deploy via Vercel CLI
 ```bash

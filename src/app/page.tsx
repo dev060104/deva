@@ -6,7 +6,7 @@ import {
   Sparkles, Gift, Share2, Heart, Award, 
   Flame, Music, RefreshCw, Send, Check, Printer, FileText, ArrowRight
 } from 'lucide-react';
-import Birthday3DScene, { BirthdayTheme, GiftType } from '@/components/Birthday3DScene';
+import Birthday3DScene, { BirthdayTheme, GiftType, CelebrationRealm, REALM_CONFIGS } from '@/components/Birthday3DScene';
 import TrendingWishesSection from '@/components/TrendingWishesSection';
 import Interactive3DCard from '@/components/Interactive3DCard';
 import ShareGiftModal from '@/components/ShareGiftModal';
@@ -22,6 +22,7 @@ function BirthdayHomeContent() {
   const [sender, setSender] = useState('With Love');
   const [age, setAge] = useState<string>('21');
   const [theme, setTheme] = useState<BirthdayTheme>('royal-gold');
+  const [realm, setRealm] = useState<CelebrationRealm>('forest');
   const [giftType, setGiftType] = useState<GiftType>('cake');
   const [secretMessage, setSecretMessage] = useState(
     'May your year ahead be as radiant, unstoppable, and joyful as your smile! 🎂✨'
@@ -36,6 +37,7 @@ function BirthdayHomeContent() {
     const fromParam = searchParams.get('from');
     const ageParam = searchParams.get('age');
     const themeParam = searchParams.get('theme') as BirthdayTheme | null;
+    const bgParam = (searchParams.get('bg') || searchParams.get('realm')) as CelebrationRealm | null;
     const giftParam = searchParams.get('gift') as GiftType | null;
     const msgParam = searchParams.get('msg');
 
@@ -47,6 +49,9 @@ function BirthdayHomeContent() {
     if (ageParam) setAge(ageParam);
     if (themeParam && ['royal-gold', 'cosmic-nebula', 'sakura-pastel', 'cyberpunk'].includes(themeParam)) {
       setTheme(themeParam);
+    }
+    if (bgParam && ['forest', 'water', 'sakura', 'sunset', 'aurora', 'royal'].includes(bgParam)) {
+      setRealm(bgParam);
     }
     if (giftParam && ['cake', 'diamond', 'trophy', 'heart'].includes(giftParam)) {
       setGiftType(giftParam);
@@ -76,6 +81,7 @@ function BirthdayHomeContent() {
     age: string;
     message: string;
     theme: BirthdayTheme;
+    realm: CelebrationRealm;
     gift: GiftType;
   }) => {
     setRecipient(cfg.recipient);
@@ -83,6 +89,7 @@ function BirthdayHomeContent() {
     setAge(cfg.age);
     setSecretMessage(cfg.message);
     setTheme(cfg.theme);
+    setRealm(cfg.realm);
     setGiftType(cfg.gift);
   };
 
@@ -194,12 +201,24 @@ function BirthdayHomeContent() {
           age={age}
           secretMessage={secretMessage}
           currentTheme={theme}
+          currentRealm={realm}
           giftType={giftType}
+          onRealmChange={(newRealm) => setRealm(newRealm)}
         />
       </section>
 
       {/* Feature Highlights Grid */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-3">
+          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-white">Living 3D Realms</h4>
+            <p className="text-[11px] text-slate-400 mt-0.5">Switch between Natural Forest fireflies, Ocean Water ripples, Sakura petals & Sunset.</p>
+          </div>
+        </div>
+
         <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-3">
           <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
             <Gift className="w-5 h-5" />
@@ -229,19 +248,9 @@ function BirthdayHomeContent() {
             <p className="text-[11px] text-slate-400 mt-0.5">Harmonized 8-bar Happy Birthday chimes with zero external audio latency.</p>
           </div>
         </div>
-
-        <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-3">
-          <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
-            <Share2 className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-white">Instant Viral URL</h4>
-            <p className="text-[11px] text-slate-400 mt-0.5">Custom link lets any recipient experience their custom 3D surprise.</p>
-          </div>
-        </div>
       </section>
 
-      {/* Interactive 3D Folding Greeting Card Section */}
+      {/* Interactive 3D Greeting Card Section */}
       <Interactive3DCard
         recipientName={recipient}
         senderName={sender}
@@ -268,6 +277,7 @@ function BirthdayHomeContent() {
         initialAge={age}
         initialMessage={secretMessage}
         initialTheme={theme}
+        initialRealm={realm}
         initialGift={giftType}
         onApplyGiftConfig={handleApplyGiftConfig}
       />

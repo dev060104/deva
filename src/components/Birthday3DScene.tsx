@@ -11,6 +11,114 @@ import {
 
 export type BirthdayTheme = 'royal-gold' | 'cosmic-nebula' | 'sakura-pastel' | 'cyberpunk';
 export type GiftType = 'cake' | 'diamond' | 'trophy' | 'heart';
+export type CelebrationRealm = 'forest' | 'water' | 'sakura' | 'sunset' | 'aurora' | 'royal';
+
+export const REALM_CONFIGS: Record<CelebrationRealm, {
+  name: string;
+  tag: string;
+  icon: string;
+  badge: string;
+  bg: number;
+  fogDensity: number;
+  pedestalColor: number;
+  pedestalRoughness: number;
+  ringColor: number;
+  light1: number;
+  light2: number;
+  description: string;
+  bannerTitle: string;
+}> = {
+  forest: {
+    name: 'Enchanted Forest',
+    tag: 'Natural',
+    icon: '🌲',
+    badge: 'Living Woodland',
+    bg: 0x02170e,
+    fogDensity: 0.045,
+    pedestalColor: 0x142b1a,
+    pedestalRoughness: 0.8,
+    ringColor: 0x00ff88,
+    light1: 0x88e788,
+    light2: 0xfff3b0,
+    description: 'Twilight woodland with glowing fireflies & falling leaves',
+    bannerTitle: '🌲 Whispering Pines, Falling Leaves & Glowing Fireflies 🍃',
+  },
+  water: {
+    name: 'Ocean Lagoon',
+    tag: 'Water',
+    icon: '🌊',
+    badge: 'Turquoise Waters',
+    bg: 0x021926,
+    fogDensity: 0.04,
+    pedestalColor: 0x0a3242,
+    pedestalRoughness: 0.2,
+    ringColor: 0x00f5d4,
+    light1: 0x00f5d4,
+    light2: 0x48cae4,
+    description: 'Crystal turquoise waters with wave ripples & rising air bubbles',
+    bannerTitle: '🌊 Shimmering Ocean Lagoon, Water Ripples & Rising Bubbles 🫧',
+  },
+  sakura: {
+    name: 'Sakura Garden',
+    tag: 'Natural',
+    icon: '🌸',
+    badge: 'Blossom Sanctuary',
+    bg: 0x160814,
+    fogDensity: 0.04,
+    pedestalColor: 0x24121d,
+    pedestalRoughness: 0.5,
+    ringColor: 0xff70a6,
+    light1: 0xffcad4,
+    light2: 0xffb4d6,
+    description: 'Peaceful Japanese garden with fluttering cherry blossom petals',
+    bannerTitle: '🌸 Soft Spring Breeze & Fluttering Cherry Blossom Petals 🍃',
+  },
+  sunset: {
+    name: 'Sunset Oasis',
+    tag: 'Natural',
+    icon: '🌅',
+    badge: 'Golden Twilight',
+    bg: 0x1a0a05,
+    fogDensity: 0.04,
+    pedestalColor: 0x3d1a0e,
+    pedestalRoughness: 0.7,
+    ringColor: 0xff9e00,
+    light1: 0xffb703,
+    light2: 0xd00000,
+    description: 'Warm golden-hour glow with floating sunset dust motes',
+    bannerTitle: '🌅 Warm Golden Sunset & Desert Mirage Oasis ✨',
+  },
+  aurora: {
+    name: 'Cosmic Aurora',
+    tag: 'Aurora',
+    icon: '🌌',
+    badge: 'Northern Lights',
+    bg: 0x040516,
+    fogDensity: 0.035,
+    pedestalColor: 0x100b26,
+    pedestalRoughness: 0.3,
+    ringColor: 0x7b2cbf,
+    light1: 0x00f5d4,
+    light2: 0x7b2cbf,
+    description: 'Deep celestial starlight with northern lights & shooting meteors',
+    bannerTitle: '🌌 Undulating Aurora Borealis & Cosmic Starlight 🌠',
+  },
+  royal: {
+    name: 'Royal Palace',
+    tag: 'Luxury',
+    icon: '👑',
+    badge: 'Gold Ballroom',
+    bg: 0x070913,
+    fogDensity: 0.04,
+    pedestalColor: 0x141a29,
+    pedestalRoughness: 0.2,
+    ringColor: 0xd4af37,
+    light1: 0xffeedd,
+    light2: 0xd4af37,
+    description: 'Opulent velvet salon with 24K gold chandeliers & champagne reflections',
+    bannerTitle: '👑 Opulent Royal Velvet Salon & 24K Gold 💎',
+  },
+};
 
 interface Birthday3DSceneProps {
   recipientName?: string;
@@ -18,8 +126,10 @@ interface Birthday3DSceneProps {
   age?: number | string;
   secretMessage?: string;
   currentTheme?: BirthdayTheme;
+  currentRealm?: CelebrationRealm;
   giftType?: GiftType;
   onUnboxed?: () => void;
+  onRealmChange?: (realm: CelebrationRealm) => void;
 }
 
 export default function Birthday3DScene({
@@ -28,8 +138,10 @@ export default function Birthday3DScene({
   age = 'Forever Young',
   secretMessage = 'May your year ahead be as radiant, unstoppable, and joyful as your smile! ✨',
   currentTheme = 'royal-gold',
+  currentRealm = 'forest',
   giftType = 'cake',
   onUnboxed,
+  onRealmChange,
 }: Birthday3DSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isUnboxed, setIsUnboxed] = useState(false);
@@ -39,6 +151,8 @@ export default function Birthday3DScene({
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeTheme, setActiveTheme] = useState<BirthdayTheme>(currentTheme);
+  const [activeRealm, setActiveRealm] = useState<CelebrationRealm>(currentRealm);
+  const [realmToast, setRealmToast] = useState<string | null>(null);
 
   // Three.js internal references
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -59,6 +173,12 @@ export default function Birthday3DScene({
   const balloonsGroup = useRef<THREE.Group | null>(null);
   const stardustPoints = useRef<THREE.Points | null>(null);
 
+  // Living Realm dynamic environment refs
+  const realmParticles = useRef<THREE.Points | null>(null);
+  const realmSecondaryParticles = useRef<THREE.Points | null>(null);
+  const realmWaterMesh = useRef<THREE.Mesh | null>(null);
+  const realmDecoGroup = useRef<THREE.Group | null>(null);
+
   // Mouse tilt tracking
   const mousePos = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, isDragging: false, prevX: 0, prevY: 0 });
   const cameraRot = useRef({ x: 0.2, y: 0 });
@@ -66,6 +186,20 @@ export default function Birthday3DScene({
   useEffect(() => {
     setActiveTheme(currentTheme);
   }, [currentTheme]);
+
+  useEffect(() => {
+    if (currentRealm) setActiveRealm(currentRealm);
+  }, [currentRealm]);
+
+  const handleSelectRealm = (realm: CelebrationRealm) => {
+    setActiveRealm(realm);
+    birthdayAudio.playNatureChime(realm);
+    setRealmToast(REALM_CONFIGS[realm].bannerTitle);
+    if (onRealmChange) onRealmChange(realm);
+    setTimeout(() => {
+      setRealmToast(null);
+    }, 3200);
+  };
 
   const themeConfigs = {
     'royal-gold': {
@@ -197,8 +331,11 @@ export default function Birthday3DScene({
     const scene = new THREE.Scene();
     sceneRef.current = scene;
     const currentCfg = themeConfigs[activeTheme];
-    scene.background = new THREE.Color(currentCfg.bg);
-    scene.fog = new THREE.FogExp2(currentCfg.bg, 0.04);
+    const realmCfg = REALM_CONFIGS[activeRealm];
+
+    // Realm background & atmospheric fog
+    scene.background = new THREE.Color(realmCfg.bg);
+    scene.fog = new THREE.FogExp2(realmCfg.bg, realmCfg.fogDensity);
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 3.2, 7.5);
@@ -215,26 +352,26 @@ export default function Birthday3DScene({
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(currentCfg.light1, 1.4);
+    const dirLight = new THREE.DirectionalLight(realmCfg.light1, 1.45);
     dirLight.position.set(5, 10, 7);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 1024;
     dirLight.shadow.mapSize.height = 1024;
     scene.add(dirLight);
 
-    const rimLight = new THREE.PointLight(currentCfg.light2, 1.8, 15);
+    const rimLight = new THREE.PointLight(realmCfg.light2, 1.9, 16);
     rimLight.position.set(-4, 3, -3);
     scene.add(rimLight);
 
     // Pedestal
     const pedestalGeo = new THREE.CylinderGeometry(3.5, 3.8, 0.35, 48);
     const pedestalMat = new THREE.MeshStandardMaterial({
-      color: 0x141a29,
-      metalness: 0.8,
-      roughness: 0.2,
+      color: realmCfg.pedestalColor,
+      metalness: activeRealm === 'water' || activeRealm === 'aurora' ? 0.35 : 0.7,
+      roughness: realmCfg.pedestalRoughness,
     });
     const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
     pedestal.position.y = -0.18;
@@ -243,11 +380,191 @@ export default function Birthday3DScene({
 
     // Glowing Neon Ring
     const ringGeo = new THREE.TorusGeometry(3.6, 0.05, 16, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: currentCfg.boxTrim });
+    const ringMat = new THREE.MeshBasicMaterial({ color: realmCfg.ringColor });
     const neonRing = new THREE.Mesh(ringGeo, ringMat);
     neonRing.rotation.x = Math.PI / 2;
     neonRing.position.y = -0.01;
     scene.add(neonRing);
+
+    // REALM LIVING ENVIRONMENT DECORATIONS & PARTICLES
+    const decoGrp = new THREE.Group();
+    scene.add(decoGrp);
+    realmDecoGroup.current = decoGrp;
+
+    if (activeRealm === 'forest') {
+      // 1. Glowing Fireflies
+      const ffCount = 90;
+      const ffGeo = new THREE.BufferGeometry();
+      const ffPos = new Float32Array(ffCount * 3);
+      const ffColors = new Float32Array(ffCount * 3);
+      const ffSeeds = new Float32Array(ffCount);
+
+      for (let i = 0; i < ffCount; i++) {
+        ffPos[i * 3] = (Math.random() - 0.5) * 11;
+        ffPos[i * 3 + 1] = 0.2 + Math.random() * 4.5;
+        ffPos[i * 3 + 2] = (Math.random() - 0.5) * 11;
+
+        const c = new THREE.Color().setHSL(0.24 + Math.random() * 0.12, 0.95, 0.65);
+        ffColors[i * 3] = c.r;
+        ffColors[i * 3 + 1] = c.g;
+        ffColors[i * 3 + 2] = c.b;
+        ffSeeds[i] = Math.random() * Math.PI * 2;
+      }
+      ffGeo.setAttribute('position', new THREE.BufferAttribute(ffPos, 3));
+      ffGeo.setAttribute('color', new THREE.BufferAttribute(ffColors, 3));
+      const ffMat = new THREE.PointsMaterial({
+        size: 0.15,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.88,
+        blending: THREE.AdditiveBlending,
+      });
+      const ffPoints = new THREE.Points(ffGeo, ffMat);
+      (ffPoints as any).userData = { seeds: ffSeeds };
+      decoGrp.add(ffPoints);
+      realmParticles.current = ffPoints;
+
+      // 2. Falling Forest Leaves
+      const leafCount = 65;
+      const leafGeo = new THREE.BufferGeometry();
+      const leafPos = new Float32Array(leafCount * 3);
+      const leafColors = new Float32Array(leafCount * 3);
+      for (let i = 0; i < leafCount; i++) {
+        leafPos[i * 3] = (Math.random() - 0.5) * 10;
+        leafPos[i * 3 + 1] = Math.random() * 6 + 1;
+        leafPos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        const lc = new THREE.Color().setHSL(0.2 + Math.random() * 0.15, 0.8, 0.45);
+        leafColors[i * 3] = lc.r;
+        leafColors[i * 3 + 1] = lc.g;
+        leafColors[i * 3 + 2] = lc.b;
+      }
+      leafGeo.setAttribute('position', new THREE.BufferAttribute(leafPos, 3));
+      leafGeo.setAttribute('color', new THREE.BufferAttribute(leafColors, 3));
+      const leafMat = new THREE.PointsMaterial({ size: 0.13, vertexColors: true, transparent: true, opacity: 0.8 });
+      const leafPoints = new THREE.Points(leafGeo, leafMat);
+      decoGrp.add(leafPoints);
+      realmSecondaryParticles.current = leafPoints;
+
+    } else if (activeRealm === 'water') {
+      // 1. Dynamic 3D Water Ripple Disc
+      const waterGeo = new THREE.CylinderGeometry(4.7, 4.9, 0.05, 48);
+      const waterMat = new THREE.MeshPhysicalMaterial({
+        color: 0x00f5d4,
+        transmission: 0.84,
+        roughness: 0.08,
+        metalness: 0.15,
+        transparent: true,
+        opacity: 0.9,
+      });
+      const waterMesh = new THREE.Mesh(waterGeo, waterMat);
+      waterMesh.position.y = -0.10;
+      decoGrp.add(waterMesh);
+      realmWaterMesh.current = waterMesh;
+
+      // 2. Rising Air Bubbles
+      const bubCount = 85;
+      const bubGeo = new THREE.BufferGeometry();
+      const bubPos = new Float32Array(bubCount * 3);
+      const bubColors = new Float32Array(bubCount * 3);
+      const bubSpeeds = new Float32Array(bubCount);
+
+      for (let i = 0; i < bubCount; i++) {
+        bubPos[i * 3] = (Math.random() - 0.5) * 7.5;
+        bubPos[i * 3 + 1] = -0.2 + Math.random() * 4.5;
+        bubPos[i * 3 + 2] = (Math.random() - 0.5) * 7.5;
+        const bc = new THREE.Color().setHSL(0.5 + Math.random() * 0.08, 0.9, 0.75);
+        bubColors[i * 3] = bc.r;
+        bubColors[i * 3 + 1] = bc.g;
+        bubColors[i * 3 + 2] = bc.b;
+        bubSpeeds[i] = 0.016 + Math.random() * 0.02;
+      }
+      bubGeo.setAttribute('position', new THREE.BufferAttribute(bubPos, 3));
+      bubGeo.setAttribute('color', new THREE.BufferAttribute(bubColors, 3));
+      const bubMat = new THREE.PointsMaterial({
+        size: 0.15,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+      });
+      const bubPoints = new THREE.Points(bubGeo, bubMat);
+      (bubPoints as any).userData = { speeds: bubSpeeds };
+      decoGrp.add(bubPoints);
+      realmParticles.current = bubPoints;
+
+      // 3. Floating Lily / Lotus Pads on the water ring
+      for (let i = 0; i < 5; i++) {
+        const ang = (i / 5) * Math.PI * 2 + 0.3;
+        const lilyGeo = new THREE.CylinderGeometry(0.38, 0.42, 0.02, 16);
+        const lilyMat = new THREE.MeshStandardMaterial({ color: 0x196f3d, roughness: 0.6 });
+        const lily = new THREE.Mesh(lilyGeo, lilyMat);
+        lily.position.set(Math.cos(ang) * 4.0, -0.06, Math.sin(ang) * 4.0);
+        lily.rotation.y = Math.random() * Math.PI;
+        decoGrp.add(lily);
+      }
+
+    } else if (activeRealm === 'sakura') {
+      // 1. Fluttering Sakura Petals
+      const petalCount = 140;
+      const petalGeo = new THREE.BufferGeometry();
+      const petalPos = new Float32Array(petalCount * 3);
+      const petalColors = new Float32Array(petalCount * 3);
+      const petalVels = new Float32Array(petalCount * 3);
+
+      for (let i = 0; i < petalCount; i++) {
+        petalPos[i * 3] = (Math.random() - 0.5) * 12;
+        petalPos[i * 3 + 1] = Math.random() * 6 + 0.5;
+        petalPos[i * 3 + 2] = (Math.random() - 0.5) * 12;
+        const pc = new THREE.Color().setHSL(0.92 + Math.random() * 0.06, 0.9, 0.75);
+        petalColors[i * 3] = pc.r;
+        petalColors[i * 3 + 1] = pc.g;
+        petalColors[i * 3 + 2] = pc.b;
+        petalVels[i * 3] = (Math.random() - 0.5) * 0.01;
+        petalVels[i * 3 + 1] = -0.012 - Math.random() * 0.008;
+        petalVels[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
+      }
+      petalGeo.setAttribute('position', new THREE.BufferAttribute(petalPos, 3));
+      petalGeo.setAttribute('color', new THREE.BufferAttribute(petalColors, 3));
+      const petalMat = new THREE.PointsMaterial({
+        size: 0.14,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+      });
+      const petalPoints = new THREE.Points(petalGeo, petalMat);
+      (petalPoints as any).userData = { vels: petalVels };
+      decoGrp.add(petalPoints);
+      realmParticles.current = petalPoints;
+
+    } else if (activeRealm === 'sunset') {
+      // 1. Warm Golden Dust Motes
+      const moteCount = 95;
+      const moteGeo = new THREE.BufferGeometry();
+      const motePos = new Float32Array(moteCount * 3);
+      const moteColors = new Float32Array(moteCount * 3);
+
+      for (let i = 0; i < moteCount; i++) {
+        motePos[i * 3] = (Math.random() - 0.5) * 10;
+        motePos[i * 3 + 1] = 0.5 + Math.random() * 5;
+        motePos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        const mc = new THREE.Color().setHSL(0.1 + Math.random() * 0.05, 0.95, 0.6);
+        moteColors[i * 3] = mc.r;
+        moteColors[i * 3 + 1] = mc.g;
+        moteColors[i * 3 + 2] = mc.b;
+      }
+      moteGeo.setAttribute('position', new THREE.BufferAttribute(motePos, 3));
+      moteGeo.setAttribute('color', new THREE.BufferAttribute(moteColors, 3));
+      const moteMat = new THREE.PointsMaterial({
+        size: 0.12,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.82,
+        blending: THREE.AdditiveBlending,
+      });
+      const motePoints = new THREE.Points(moteGeo, moteMat);
+      decoGrp.add(motePoints);
+      realmParticles.current = motePoints;
+    }
 
     // 3D Gift Box
     const boxGroup = new THREE.Group();
@@ -697,6 +1014,77 @@ export default function Birthday3DScene({
         starPoints.rotation.y = elapsedTime * 0.03;
       }
 
+      // 60FPS Living Realm Animations
+      if (activeRealm === 'forest') {
+        if (realmParticles.current) {
+          const posAttr = realmParticles.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+          const pos = posAttr.array as Float32Array;
+          const seeds = (realmParticles.current as any).userData?.seeds;
+          for (let i = 0; i < posAttr.count; i++) {
+            const seed = seeds ? seeds[i] : i;
+            pos[i * 3 + 1] += Math.sin(elapsedTime * 2.2 + seed) * 0.005;
+            pos[i * 3] += Math.cos(elapsedTime * 1.6 + seed) * 0.003;
+          }
+          posAttr.needsUpdate = true;
+        }
+        if (realmSecondaryParticles.current) {
+          const posAttr = realmSecondaryParticles.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+          const pos = posAttr.array as Float32Array;
+          for (let i = 0; i < posAttr.count; i++) {
+            pos[i * 3 + 1] -= 0.012;
+            pos[i * 3] += Math.sin(elapsedTime + i) * 0.003;
+            if (pos[i * 3 + 1] < -0.2) {
+              pos[i * 3 + 1] = 6.0;
+            }
+          }
+          posAttr.needsUpdate = true;
+        }
+      } else if (activeRealm === 'water') {
+        if (realmWaterMesh.current) {
+          realmWaterMesh.current.position.y = -0.10 + Math.sin(elapsedTime * 2.4) * 0.014;
+          realmWaterMesh.current.rotation.y = elapsedTime * 0.04;
+        }
+        if (realmParticles.current) {
+          const posAttr = realmParticles.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+          const pos = posAttr.array as Float32Array;
+          const speeds = (realmParticles.current as any).userData?.speeds;
+          for (let i = 0; i < posAttr.count; i++) {
+            const spd = speeds ? speeds[i] : 0.018;
+            pos[i * 3 + 1] += spd;
+            pos[i * 3] += Math.sin(elapsedTime * 3.2 + i) * 0.003;
+            if (pos[i * 3 + 1] > 4.5) {
+              pos[i * 3 + 1] = -0.2;
+            }
+          }
+          posAttr.needsUpdate = true;
+        }
+      } else if (activeRealm === 'sakura') {
+        if (realmParticles.current) {
+          const posAttr = realmParticles.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+          const pos = posAttr.array as Float32Array;
+          const vels = (realmParticles.current as any).userData?.vels;
+          for (let i = 0; i < posAttr.count; i++) {
+            pos[i * 3 + 1] -= 0.014;
+            pos[i * 3] += Math.cos(elapsedTime * 1.3 + i) * 0.004;
+            pos[i * 3 + 2] += Math.sin(elapsedTime * 1.3 + i) * 0.004;
+            if (pos[i * 3 + 1] < -0.2) {
+              pos[i * 3 + 1] = 6.2;
+            }
+          }
+          posAttr.needsUpdate = true;
+        }
+      } else if (activeRealm === 'sunset') {
+        if (realmParticles.current) {
+          const posAttr = realmParticles.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+          const pos = posAttr.array as Float32Array;
+          for (let i = 0; i < posAttr.count; i++) {
+            pos[i * 3 + 1] += Math.sin(elapsedTime * 1.2 + i) * 0.003;
+            pos[i * 3] += Math.cos(elapsedTime * 0.8 + i) * 0.002;
+          }
+          posAttr.needsUpdate = true;
+        }
+      }
+
       for (let i = fireworksSystems.current.length - 1; i >= 0; i--) {
         const fw = fireworksSystems.current[i];
         const u = (fw as any).userData;
@@ -739,7 +1127,7 @@ export default function Birthday3DScene({
       window.removeEventListener('touchend', handlePointerUp);
       renderer.dispose();
     };
-  }, [activeTheme, giftType, candlesBlown]);
+  }, [activeTheme, activeRealm, giftType, candlesBlown]);
 
   const triggerUnbox = () => {
     if (isUnboxed) return;
@@ -938,6 +1326,42 @@ export default function Birthday3DScene({
           </p>
         </div>
       </div>
+
+      {/* Living 3D Realms / Environment Background Selector */}
+      <div className="absolute top-28 left-5 sm:left-6 z-20 flex flex-wrap items-center gap-1 sm:gap-1.5 p-1.5 rounded-2xl bg-black/75 backdrop-blur-xl border border-white/15 shadow-2xl max-w-[94vw] sm:max-w-none">
+        <span className="text-[10px] uppercase font-mono tracking-wider text-emerald-400 px-2 flex items-center gap-1 font-bold">
+          <Sparkles className="w-3 h-3 text-emerald-400 animate-spin" style={{ animationDuration: '5s' }} />
+          <span className="hidden sm:inline">Living World:</span>
+        </span>
+        {(Object.keys(REALM_CONFIGS) as CelebrationRealm[]).map((realmKey) => {
+          const cfg = REALM_CONFIGS[realmKey];
+          const isSelected = activeRealm === realmKey;
+          return (
+            <button
+              key={realmKey}
+              onClick={() => handleSelectRealm(realmKey)}
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
+                isSelected
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 border border-emerald-300/50 scale-105'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+              title={cfg.description}
+            >
+              <span>{cfg.icon}</span>
+              <span className="hidden md:inline">{cfg.name}</span>
+              <span className="inline md:hidden">{cfg.name.split(' ')[0]}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Floating Realm Announcement Toast */}
+      {realmToast && (
+        <div className="absolute top-44 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-2xl bg-black/85 backdrop-blur-xl border border-emerald-400/50 text-emerald-300 text-xs sm:text-sm font-bold shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 duration-300 pointer-events-none whitespace-nowrap">
+          <Sparkles className="w-4 h-4 text-emerald-400 animate-spin" style={{ animationDuration: '3s' }} />
+          <span>{realmToast}</span>
+        </div>
+      )}
 
       {/* Top-Right Quick Interactive Tools */}
       <div className="absolute top-5 right-5 z-20 flex items-center gap-2">

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { birthdayAudio } from '@/lib/birthdayAudio';
-import { BirthdayTheme, GiftType } from './Birthday3DScene';
+import { BirthdayTheme, GiftType, CelebrationRealm } from './Birthday3DScene';
 
 interface ShareGiftModalProps {
   isOpen: boolean;
@@ -17,6 +17,7 @@ interface ShareGiftModalProps {
   initialAge: string | number;
   initialMessage: string;
   initialTheme: BirthdayTheme;
+  initialRealm?: CelebrationRealm;
   initialGift: GiftType;
   onApplyGiftConfig: (config: {
     recipient: string;
@@ -24,6 +25,7 @@ interface ShareGiftModalProps {
     age: string;
     message: string;
     theme: BirthdayTheme;
+    realm: CelebrationRealm;
     gift: GiftType;
   }) => void;
 }
@@ -36,6 +38,7 @@ export default function ShareGiftModal({
   initialAge,
   initialMessage,
   initialTheme,
+  initialRealm = 'forest',
   initialGift,
   onApplyGiftConfig,
 }: ShareGiftModalProps) {
@@ -44,6 +47,7 @@ export default function ShareGiftModal({
   const [age, setAge] = useState(initialAge ? `${initialAge}` : '');
   const [message, setMessage] = useState(initialMessage);
   const [theme, setTheme] = useState<BirthdayTheme>(initialTheme);
+  const [realm, setRealm] = useState<CelebrationRealm>(initialRealm);
   const [gift, setGift] = useState<GiftType>(initialGift);
   const [isCopied, setIsCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
@@ -55,9 +59,10 @@ export default function ShareGiftModal({
       setAge(initialAge ? `${initialAge}` : '');
       setMessage(initialMessage);
       setTheme(initialTheme);
+      if (initialRealm) setRealm(initialRealm);
       setGift(initialGift);
     }
-  }, [isOpen, initialRecipient, initialSender, initialAge, initialMessage, initialTheme, initialGift]);
+  }, [isOpen, initialRecipient, initialSender, initialAge, initialMessage, initialTheme, initialRealm, initialGift]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -67,11 +72,12 @@ export default function ShareGiftModal({
     if (sender) params.set('from', sender.trim());
     if (age) params.set('age', age.trim());
     if (theme) params.set('theme', theme);
+    if (realm) params.set('bg', realm);
     if (gift) params.set('gift', gift);
     if (message) params.set('msg', message.trim());
 
     setShareUrl(`${origin}/?${params.toString()}`);
-  }, [recipient, sender, age, theme, gift, message]);
+  }, [recipient, sender, age, theme, realm, gift, message]);
 
   if (!isOpen) return null;
 
@@ -97,6 +103,7 @@ export default function ShareGiftModal({
       age: age.trim() || '',
       message: message.trim() || 'Happy Birthday!',
       theme,
+      realm,
       gift,
     });
     birthdayAudio.playUnboxFanfare();
@@ -240,6 +247,37 @@ export default function ShareGiftModal({
                   }`}
                 >
                   {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-slate-400 font-medium mb-1.5">Living World Background (Natural / Water / Forest)</label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {[
+                { id: 'forest', icon: '🌲', label: 'Enchanted Forest' },
+                { id: 'water', icon: '🌊', label: 'Ocean Lagoon' },
+                { id: 'sakura', icon: '🌸', label: 'Sakura Garden' },
+                { id: 'sunset', icon: '🌅', label: 'Sunset Oasis' },
+                { id: 'aurora', icon: '🌌', label: 'Cosmic Aurora' },
+                { id: 'royal', icon: '👑', label: 'Royal Palace' },
+              ].map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => {
+                    setRealm(r.id as CelebrationRealm);
+                    birthdayAudio.playNatureChime(r.id as CelebrationRealm);
+                  }}
+                  className={`p-2 rounded-xl border text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer ${
+                    realm === r.id
+                      ? 'bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-md shadow-emerald-500/20'
+                      : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>{r.icon}</span>
+                  <span className="truncate">{r.label}</span>
                 </button>
               ))}
             </div>

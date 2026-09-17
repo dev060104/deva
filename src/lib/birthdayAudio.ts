@@ -295,6 +295,95 @@ class BirthdaySoundEngine {
     }
   }
 
+  public playNatureChime(realm: 'forest' | 'water' | 'sakura' | 'aurora' | 'sunset' | 'royal') {
+    if (this.isMuted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      if (realm === 'water') {
+        // Water bubble / ripple sound
+        [0, 0.12, 0.24].forEach((delay, i) => {
+          const time = ctx.currentTime + delay;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(450 + i * 150, time);
+          osc.frequency.exponentialRampToValueAtTime(1100 + i * 100, time + 0.12);
+          gain.gain.setValueAtTime(0.18, time);
+          gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + 0.18);
+        });
+      } else if (realm === 'forest') {
+        // Woodland cricket / gentle bird flute
+        [0, 0.08, 0.18, 0.26].forEach((delay, i) => {
+          const time = ctx.currentTime + delay;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          const freq = i % 2 === 0 ? 1480 : 1760;
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.14, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + 0.1);
+        });
+      } else if (realm === 'sakura') {
+        // Zen temple pentatonic bell
+        [587.33, 739.99, 880.0, 1174.66].forEach((freq, idx) => {
+          const time = ctx.currentTime + idx * 0.09;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.15, time);
+          gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.8);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + 0.8);
+        });
+      } else if (realm === 'aurora') {
+        // Ethereal cosmic shimmer
+        [1046.5, 1318.51, 1567.98, 2093.0].forEach((freq, idx) => {
+          const time = ctx.currentTime + idx * 0.07;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.12, time);
+          gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.1);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + 1.1);
+        });
+      } else {
+        // Sunset / Royal warm golden chords
+        [440.0, 554.37, 659.25, 880.0].forEach((freq, idx) => {
+          const time = ctx.currentTime + idx * 0.08;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, time);
+          gain.gain.setValueAtTime(0.15, time);
+          gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.9);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(time);
+          osc.stop(time + 0.9);
+        });
+      }
+    } catch {
+      // ignore
+    }
+  }
+
   public getIsPlaying(): boolean {
     return this.isMelodyPlaying;
   }

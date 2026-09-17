@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import Birthday3DScene, { BirthdayTheme, GiftType } from '@/components/Birthday3DScene';
 import TrendingWishesSection from '@/components/TrendingWishesSection';
+import Interactive3DCard from '@/components/Interactive3DCard';
 import ShareGiftModal from '@/components/ShareGiftModal';
 import GreetingCardModal from '@/components/GreetingCardModal';
 import confetti from 'canvas-confetti';
@@ -239,6 +240,16 @@ function BirthdayHomeContent() {
           </div>
         </div>
       </section>
+
+      {/* Interactive 3D Folding Greeting Card Section */}
+      <Interactive3DCard
+        recipientName={recipient}
+        senderName={sender}
+        age={age}
+        message={secretMessage}
+        themeName={theme.replace('-', ' ')}
+        onUpdateMessage={(newMsg) => setSecretMessage(newMsg)}
+      />
 
       {/* Trending Wishes Vault */}
       <TrendingWishesSection

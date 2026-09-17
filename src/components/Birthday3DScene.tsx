@@ -34,6 +34,7 @@ export default function Birthday3DScene({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isUnboxed, setIsUnboxed] = useState(false);
   const [candlesBlown, setCandlesBlown] = useState(false);
+  const [isCakeCut, setIsCakeCut] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -50,6 +51,8 @@ export default function Birthday3DScene({
   const lidMesh = useRef<THREE.Group | null>(null);
   const ribbonGroup = useRef<THREE.Group | null>(null);
   const surpriseGroup = useRef<THREE.Group | null>(null);
+  const cakeKnifeGroup = useRef<THREE.Group | null>(null);
+  const cakeSliceGroup = useRef<THREE.Group | null>(null);
   const flameLights = useRef<THREE.PointLight[]>([]);
   const flameMeshes = useRef<THREE.Mesh[]>([]);
   const fireworksSystems = useRef<THREE.Points[]>([]);
@@ -346,6 +349,7 @@ export default function Birthday3DScene({
     flameMeshes.current = [];
 
     if (giftType === 'cake') {
+      // 1. Tier 1 Base (3/4 cylinder)
       const t1Geo = new THREE.CylinderGeometry(0.9, 0.95, 0.5, 32);
       const cakeMat = new THREE.MeshStandardMaterial({ color: 0xfff5ea, roughness: 0.4 });
       const t1 = new THREE.Mesh(t1Geo, cakeMat);
@@ -359,6 +363,7 @@ export default function Birthday3DScene({
       t1Rim.position.y = 0.48;
       surpGrp.add(t1Rim);
 
+      // 2. Tier 2 Top
       const t2Geo = new THREE.CylinderGeometry(0.6, 0.65, 0.45, 32);
       const t2Mat = new THREE.MeshStandardMaterial({ color: 0xffccd5, roughness: 0.3 });
       const t2 = new THREE.Mesh(t2Geo, t2Mat);
@@ -374,6 +379,72 @@ export default function Birthday3DScene({
         surpGrp.add(pearl);
       }
 
+      // 3. SEPARABLE CAKE WEDGE SLICE (Slides forward onto plate when cut!)
+      const sliceGrp = new THREE.Group();
+      sliceGrp.position.set(0, 0, 0);
+      surpGrp.add(sliceGrp);
+      cakeSliceGroup.current = sliceGrp;
+
+      // Slice Tier 1 Wedge
+      const s1Geo = new THREE.CylinderGeometry(0.92, 0.96, 0.52, 16, 1, false, -Math.PI / 8, Math.PI / 4);
+      const sliceInnerMat = new THREE.MeshStandardMaterial({ color: 0xffe8d6, roughness: 0.5 }); // Sponge interior
+      const s1 = new THREE.Mesh(s1Geo, sliceInnerMat);
+      s1.position.y = 0.25;
+      sliceGrp.add(s1);
+
+      // Slice Tier 2 Wedge
+      const s2Geo = new THREE.CylinderGeometry(0.62, 0.66, 0.46, 16, 1, false, -Math.PI / 8, Math.PI / 4);
+      const s2 = new THREE.Mesh(s2Geo, t2Mat);
+      s2.position.y = 0.72;
+      sliceGrp.add(s2);
+
+      // Slice Strawberry Topper
+      const berryGeo = new THREE.SphereGeometry(0.08, 12, 12);
+      berryGeo.scale(1, 1.3, 1);
+      const berryMat = new THREE.MeshStandardMaterial({ color: 0xd90429, roughness: 0.2 });
+      const berry = new THREE.Mesh(berryGeo, berryMat);
+      berry.position.set(0, 1.02, 0.25);
+      sliceGrp.add(berry);
+
+      // 4. GOLDEN DESSERT PLATE (Waits in front for the slice)
+      const plateGeo = new THREE.CylinderGeometry(0.85, 0.7, 0.06, 32);
+      const plateMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.85, roughness: 0.2 });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 0.03, 1.35);
+      surpGrp.add(plate);
+
+      // 5. 3D CELEBRATION KNIFE
+      const knifeGrp = new THREE.Group();
+      // Hovering above cake initially
+      knifeGrp.position.set(0.6, 1.6, 0.4);
+      knifeGrp.rotation.set(Math.PI / 5, -Math.PI / 6, Math.PI / 8);
+      surpGrp.add(knifeGrp);
+      cakeKnifeGroup.current = knifeGrp;
+
+      // Chrome Blade
+      const bladeGeo = new THREE.BoxGeometry(0.02, 0.25, 0.9);
+      const bladeMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, metalness: 0.95, roughness: 0.1 });
+      const blade = new THREE.Mesh(bladeGeo, bladeMat);
+      blade.castShadow = true;
+      knifeGrp.add(blade);
+
+      // Brass Bolster
+      const bolGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.1, 12);
+      const bolMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.2 });
+      const bolster = new THREE.Mesh(bolGeo, bolMat);
+      bolster.rotation.x = Math.PI / 2;
+      bolster.position.z = -0.5;
+      knifeGrp.add(bolster);
+
+      // Rosewood Handle
+      const handleGeo = new THREE.CylinderGeometry(0.045, 0.04, 0.45, 12);
+      const handleMat = new THREE.MeshStandardMaterial({ color: 0x582f0e, roughness: 0.4 });
+      const handle = new THREE.Mesh(handleGeo, handleMat);
+      handle.rotation.x = Math.PI / 2;
+      handle.position.z = -0.75;
+      knifeGrp.add(handle);
+
+      // 3 Birthday Candles
       const candlePositions = [
         [-0.25, 0.95, 0],
         [0.25, 0.95, 0],
@@ -733,6 +804,54 @@ export default function Birthday3DScene({
     }, 200);
   };
 
+  // 3D Cake Cutting Ceremony
+  const cutCake = () => {
+    if (isCakeCut) return;
+    birthdayAudio.playCakeSlice();
+
+    const startTime = performance.now();
+    const duration = 1200;
+
+    const animateCut = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+
+      // 1. Knife moves down through cake and pulls back
+      if (cakeKnifeGroup.current) {
+        if (progress < 0.45) {
+          const p = progress / 0.45;
+          cakeKnifeGroup.current.position.set(0.6 * (1 - p), 1.6 - p * 0.95, 0.4 * (1 - p));
+          cakeKnifeGroup.current.rotation.set(Math.PI / 5 + p * 0.3, -Math.PI / 6, Math.PI / 8 - p * 0.4);
+        } else {
+          const p = (progress - 0.45) / 0.55;
+          cakeKnifeGroup.current.position.set(p * 1.6, 0.65 + p * 0.3, p * 0.8);
+          cakeKnifeGroup.current.rotation.set(Math.PI / 5, -Math.PI / 6 + p * 0.5, Math.PI / 8);
+        }
+      }
+
+      // 2. Cake slice separates and slides forward onto dessert plate
+      if (cakeSliceGroup.current && progress > 0.35) {
+        const sliceP = (progress - 0.35) / 0.65;
+        const ease = 1 - Math.pow(1 - sliceP, 3);
+        cakeSliceGroup.current.position.z = ease * 1.35;
+        cakeSliceGroup.current.position.y = ease * -0.05 + Math.sin(ease * Math.PI) * 0.12;
+        cakeSliceGroup.current.rotation.y = ease * 0.1;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(animateCut);
+      } else {
+        setIsCakeCut(true);
+        birthdayAudio.playCheer();
+        triggerConfettiBlast();
+        spawn3DFirework();
+        spawn3DFirework();
+      }
+    };
+
+    requestAnimationFrame(animateCut);
+  };
+
   const toggleMusic = () => {
     if (isMusicPlaying) {
       birthdayAudio.stopMelody();
@@ -752,6 +871,7 @@ export default function Birthday3DScene({
   const resetBox = () => {
     setIsUnboxed(false);
     setCandlesBlown(false);
+    setIsCakeCut(false);
     if (lidMesh.current) {
       lidMesh.current.position.set(0, 1.36 + 0.02, 0);
       lidMesh.current.rotation.set(0, 0, 0);
@@ -762,6 +882,14 @@ export default function Birthday3DScene({
     if (surpriseGroup.current) {
       surpriseGroup.current.scale.set(0.001, 0.001, 0.001);
       surpriseGroup.current.position.set(0, 0.2, 0);
+    }
+    if (cakeSliceGroup.current) {
+      cakeSliceGroup.current.position.set(0, 0, 0);
+      cakeSliceGroup.current.rotation.set(0, 0, 0);
+    }
+    if (cakeKnifeGroup.current) {
+      cakeKnifeGroup.current.position.set(0.6, 1.6, 0.4);
+      cakeKnifeGroup.current.rotation.set(Math.PI / 5, -Math.PI / 6, Math.PI / 8);
     }
     flameMeshes.current.forEach((mesh) => (mesh.visible = true));
     flameLights.current.forEach((light) => (light.intensity = 1.2));
@@ -884,10 +1012,18 @@ export default function Birthday3DScene({
               <Wind className="w-4 h-4" />
               <span>Blow Out Candles! 🎂</span>
             </button>
+          ) : giftType === 'cake' && !isCakeCut ? (
+            <button
+              onClick={cutCake}
+              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-white text-xs sm:text-sm font-bold shadow-xl shadow-rose-500/25 hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer"
+            >
+              <Gift className="w-4 h-4" />
+              <span>🔪 Cut the Birthday Cake!</span>
+            </button>
           ) : (
             <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold backdrop-blur-md">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>Wish Made! Happy Birthday! ✨</span>
+              <span>First Slice Cut! Happy Birthday, {recipientName}! 🍰✨</span>
             </div>
           )}
 

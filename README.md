@@ -1,6 +1,13 @@
 # 🎂 Birthday Magic 3D: Trending Wishes & 3D Gift Vision Experience
 
-An immersive, cinematic **3D Vision Birthday Celebration Web Application** with interactive 3D gift unboxing, tiered birthday cakes with blowable candles and smoke physics, procedural 3D fireworks, synthesized Web Audio music-box melodies, 40+ trending curated wishes (Gen Z, Constellation Poetry, Cyberpunk, Royal VIP, Savage Roast), and instant viral shareable gift URLs.
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://birthday-3d-magic.vercel.app)
+[![Built with Next.js](https://img.shields.io/badge/Next.js-16%20Turbopack-blue?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![Three.js](https://img.shields.io/badge/Three.js-WebGL%203D-black?style=for-the-badge&logo=three.js)](https://threejs.org)
+
+🌐 **Live Production URL**: [https://birthday-3d-magic.vercel.app](https://birthday-3d-magic.vercel.app)  
+📊 **Vercel Project Dashboard**: [https://vercel.com/manchigaraladevadas0604-1561s-projects/birthday-3d-magic](https://vercel.com/manchigaraladevadas0604-1561s-projects/birthday-3d-magic)
+
+An immersive, cinematic **3D Vision Birthday Celebration Web Application** with interactive 3D gift unboxing, tiered birthday cakes with blowable candles and smoke physics, interactive cake cutting with knife and wedge slice, folding 3D greeting card, procedural 3D fireworks, synthesized Web Audio music-box melodies, 40+ trending curated wishes (Gen Z, Constellation Poetry, Cyberpunk, Royal VIP, Savage Roast), and instant viral shareable gift URLs.
 
 Built with **Next.js 16 (Turbopack)**, **Three.js WebGL**, **React 19**, and **Tailwind CSS**, pre-configured for **1-click Vercel deployment** and **GitHub repository synchronization**.
 

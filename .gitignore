@@ -11,3 +11,4 @@ quizmaster-ai/.next/
 .DS_Store
 .env*
 .vercel
+.snapshots/

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, Brain, Globe, Briefcase, BarChart3, Settings, Flame, BookOpen, Activity } from 'lucide-react';
+import { Sparkles, Brain, Globe, Briefcase, BarChart3, Settings, Flame, BookOpen, Activity, Gift } from 'lucide-react';
 import { getUserStats } from '@/lib/storage';
 import SettingsModal from './SettingsModal';
 
@@ -19,6 +19,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '/', label: 'Portal', icon: Brain },
+    { href: '/birthday', label: '🎁 3D Birthday', icon: Gift },
     { href: '/earthquake', label: '🌋 Earth Predictor', icon: Activity },
     { href: '/quiz', label: 'Play Quiz', icon: BookOpen },
     { href: '/wikipedia', label: 'Wiki Engine', icon: Globe },
@@ -44,7 +45,7 @@ export default function Navbar() {
                 AI Knowledge<span className="text-indigo-400">Hub</span>
               </span>
               <span className="block text-[10px] text-slate-400 -mt-1 font-medium tracking-wider uppercase">
-                QuizMaster & SeismoAI
+                QuizMaster, SeismoAI & 3D Magic
               </span>
             </div>
           </Link>
@@ -55,18 +56,23 @@ export default function Navbar() {
               const Icon = link.icon;
               const isActive = pathname === link.href;
               const isEarthquake = link.href === '/earthquake';
+              const isBirthday = link.href === '/birthday';
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     isActive
-                      ? isEarthquake 
-                        ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-amber-600/30'
-                        : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/30'
-                      : isEarthquake
-                        ? 'text-amber-400 hover:bg-amber-500/10'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                      ? isBirthday
+                        ? 'bg-gradient-to-r from-pink-500 to-amber-500 text-white shadow-md shadow-pink-500/30 font-bold'
+                        : isEarthquake 
+                          ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-amber-600/30'
+                          : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/30'
+                      : isBirthday
+                        ? 'text-pink-400 hover:bg-pink-500/10 font-semibold'
+                        : isEarthquake
+                          ? 'text-amber-400 hover:bg-amber-500/10'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />

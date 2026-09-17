@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { 
   Brain, Sparkles, Globe, Briefcase, Activity, Zap, BarChart2, 
-  Layers, ArrowRight, ShieldAlert, Award
+  Layers, ArrowRight, ShieldAlert, Award, Gift, Flame, Music
 } from 'lucide-react';
 
 export default function LaunchpadPortalPage() {
@@ -13,19 +13,59 @@ export default function LaunchpadPortalPage() {
       
       {/* Hero Header */}
       <section className="text-center space-y-4 pt-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
-          <Sparkles className="w-4 h-4 text-indigo-400 animate-pulse" />
-          <span>Dual AI Platform Hub</span>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-indigo-500/10 border border-pink-500/20 text-pink-300 text-xs font-semibold">
+          <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" />
+          <span>Integrated Multi-App Platform Hub</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
-          Choose Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">AI Platform</span>
+          Explore Intelligent <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-amber-300 to-indigo-400">Apps & 3D Magic</span>
         </h1>
 
         <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Access two dedicated, separate AI applications: Earthquake Seismic Hazard Prediction & Neural Classification, or the QuizMaster Universal Knowledge & Interview Simulator.
+          From interactive 3D vision birthday celebrations and gift unboxing to neural seismic earthquake analysis and universal AI interview prep.
         </p>
       </section>
+
+      {/* FEATURED SHOWCASE: 3D BIRTHDAY WISHES & GIFT VISION */}
+      <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-pink-950/40 via-[#161226] to-amber-950/40 border-2 border-pink-500/40 shadow-2xl hover:border-pink-500/70 transition-all group relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-pink-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-4 max-w-xl text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-mono font-bold uppercase">
+              <Gift className="w-3.5 h-3.5 animate-bounce" />
+              <span>New Trending Release</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-4xl font-black text-white leading-tight">
+              3D Vision Birthday Wishes & Interactive Gift Unboxing
+            </h2>
+
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Step into an immersive WebGL 3D world: unbox a velvet gift box, blow out burning candles on a 3-tier cake, launch 3D fireworks, listen to a synthesized music-box melody, and explore 40+ trending wishes across Gen Z, Constellation Poetry, Cyberpunk, and VIP Royalty!
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2 text-xs text-slate-400 font-mono">
+              <span className="flex items-center gap-1"><Sparkles className="w-3.5 h-3.5 text-amber-400" /> Three.js 3D Vision</span>
+              <span className="flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-pink-400" /> Blowable Candles</span>
+              <span className="flex items-center gap-1"><Music className="w-3.5 h-3.5 text-indigo-400" /> Synthesized Melodies</span>
+              <span className="flex items-center gap-1"><Gift className="w-3.5 h-3.5 text-emerald-400" /> Viral Shareable Links</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 w-full md:w-auto shrink-0">
+            <Link
+              href="/birthday"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-amber-500 hover:from-pink-400 hover:to-amber-400 text-white font-bold text-sm shadow-xl shadow-pink-500/30 hover:scale-105 active:scale-95 transition-all"
+            >
+              <span>Launch 3D Birthday Experience</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* Dual Platform Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

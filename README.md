@@ -1,188 +1,180 @@
-# 🧠 QuizMaster AI: Universal Knowledge & Mock Interview Simulator
+# 🎂 Aetheria 3D: Trending Birthday Wishes & 3D Gift Vision Experience
 
-**QuizMaster AI** is a state-of-the-art, full-featured AI Quiz, Knowledge Explorer, and Interview Prep platform. It covers all domains of human knowledge, real-time Wikipedia article parsing, technical and behavioral interview simulations, official facts vs urban myths, flashcard study modes, and custom AI question generation.
+An immersive, cinematic **3D Vision Birthday Celebration Platform** with interactive 3D gift unboxing, tiered birthday cakes with blowable candles, procedural 3D fireworks, synthesized Web Audio music-box melodies, 40+ trending curated wishes (Gen Z, Constellation Poetry, Cyberpunk, Royal VIP, Savage Roast), and instant viral shareable gift URLs.
 
-Built with **Next.js 14/15 App Router**, **TypeScript**, and **Tailwind CSS**, fully optimized for **1-click deployment on Vercel** and structured for **GitHub repository push**.
+Integrated into the **Next.js 16 + React 19 + Three.js + Tailwind CSS** platform, pre-configured for **1-click Vercel deployment** and **GitHub repository synchronization**.
 
 ---
 
-## ✨ Features
+## 🌟 3D Vision & Celebration Features
 
-- 🎯 **Multi-Domain Knowledge Spheres**:
-  - **System Design & Architecture**: High-availability systems, scalability, load balancing, CAP theorem, consistent hashing, messaging queues (Kafka/RabbitMQ).
-  - **Software Engineering & Coding**: Data structures, React, Node.js, Python, clean code, design patterns.
-  - **HR & Behavioral Practice**: STAR method scenarios, conflict resolution, leadership principles.
-  - **Product & Business Case**: Product strategy metrics, framework prioritization, consulting case studies.
-  - **Official Facts vs Urban Myths**: Test knowledge against popular urban legends, tech lore, and historical inaccuracies.
-  - **Science & Quantum Physics**: Astrophysics, genetics (CRISPR), quantum entanglement.
-  - **World History & Pop Culture**: Ancient battles, industrial revolution, gaming lore, cinema.
+### 🎁 1. Interactive 3D Gift Box Unboxing
+- **Realistic 3D Meshes**: Royal velvet box base, 24K gold foil trim, satin ribbons, and a 3D dual-loop bow knot.
+- **Physics & Motion**: Smooth mouse/touch parallax tilt and 360° orbit camera.
+- **Unwrapping Sequence**: Click the box to watch ribbons dissolve into golden sparkle particles, the lid pop and spin in mid-air, and the surprise emerge with celebratory sound effects and full-screen confetti showers.
 
-- 🌐 **Live Wikipedia Knowledge Engine**:
-  - Search any article live via Wikipedia REST API.
-  - Generates factual summary cards and auto-synthesizes multiple-choice questions on-the-fly.
+### 🎂 2. Tiered 3D Birthday Cake & Blowable Candles
+- **Detailed 3D Cake**: Vanilla cream and strawberry frosted tiers with decorative pearls and piping.
+- **Procedural Candle Flames**: Real-time flickering golden point lights and animated flame meshes.
+- **Interactive "Blow Candles" Action**: Click or blow to extinguish the flames with realistic drifting smoke puff particles, trigger a triumphant celebratory fanfare, and ignite 3D fireworks!
 
-- 🤖 **AI Mock Interview Simulator**:
-  - Interactive scenario questions with evaluation focus criteria.
-  - Real-time AI candidate evaluation scoring (0-100%), key points covered vs missing, strengths, and sample model answers.
+### 🎆 3. 3D Particle Fireworks & Floating Balloons
+- **Radial 3D Fireworks**: Fireworks that launch into the sky and explode into hundred-particle spherical bursts with gravity deceleration and stardust trails.
+- **Floating Metallic Balloons**: Tear-shaped 3D balloons bobbing with simulated wind turbulence and realistic strings.
 
-- ⚡ **Custom AI Quiz Builder**:
-  - Paste any study text, notes, job description, or custom prompt to generate instant quiz decks.
+### 🎶 4. Zero-Latency Synthesized Web Audio Engine
+- **100% Self-Contained**: Powered entirely by the Web Audio API with zero external audio assets or broken CDNs.
+- **Sound Designer Features**:
+  - ✨ Crystal chime harmonic arpeggios on interactions and wish copying.
+  - 🎁 Unboxing pop and sparkling fanfare crescendo.
+  - 💨 White-noise bandpass filter candle breath puff and extinguish sizzle.
+  - 🎺 Triumphant brass party cheer.
+  - 🎵 Harmonized 8-bar music-box chime melody playing "Happy Birthday to You".
 
-- 💡 **AI Tutor Assistant**:
-  - Interactive slide-over drawer allowing users to ask follow-up questions about any answer choice ("Explain B", "Give a real-world example").
+### 🎨 5. 4 Dynamic 3D Aesthetics & Themes
+1. **👑 Royal Gold**: Midnight navy with 24K gold foil, champagne reflections, and royal ruby velvet.
+2. **🌌 Cosmic Nebula**: Deep space violet with electric cyan neon accents and stardust halos.
+3. **🌸 Sakura Pastel**: Soft blush pinks, rose gold trims, and pearlescent floral highlights.
+4. **⚡ Cyberpunk 2077**: Electric matrix emerald, neon magenta ribbons, and cyberpunk yellow glows.
 
-- 🎮 **Multiple Game Modes**:
-  - **Standard Mode**: Timed questions with explanations.
-  - **Survival / Sudden Death**: How far can you go with 3 hearts?
-  - **Flashcard Study**: Flip cards for quick concept review.
+---
 
-- 📊 **Performance Analytics & Bookmarks**:
-  - Accuracy graphs, category mastery breakdown, active streak counter, bookmarked questions, and JSON stats Export/Import.
+## 🔥 Trending Curated Wishes Vault (40+ Unique Wishes)
 
-- 🔑 **Hybrid AI & Privacy-First**:
-  - Works **100% out-of-the-box** with built-in algorithmic engine and rich curated fallback databases.
-  - Optional custom **OpenAI / Gemini API Key** settings panel stored locally in client session.
+- **🔥 Gen Z & Internet Culture**: *"No cap, another year of serving immaculate main character energy... 💅✨"*, *"Level [Age] unlocked! Still undisputed, still high key iconic 👑"*, *"Ate and left zero crumbs for [Age] years straight 🎂🔥"*.
+- **✨ Constellation & Cinematic Poetry**: *"To a soul woven of constellations and quiet courage: may the universe align in your favor... 🌌"*, *"In the grand screenplay of time, today is your spotlight scene 🎬"*.
+- **🚀 Tech & Cyberpunk / Dev Life**: *"git commit -m 'Leveled up to version [Age].0'. Zero breaking changes, infinite upgrades! 🚀💻"*, *"while (birthday) { eatCake(); enjoyLife(); ignoreBugs(); } ⚡"*.
+- **👑 Royal & Luxury VIP**: *"Excellence isn't accidental, it's hereditary. Toasting to your billionaire mindset and timeless grace 🥂💎"*.
+- **🎭 Savage & Hilarious Roast**: *"Happy birthday to someone who is smart, funny, gorgeous, and reminds me a lot of myself! 😉🎂"*, *"You're not old, you're just vintage and expensive to maintain 🍷"*.
+- **💖 Deep Soulmate**: *"Every year with you is my favorite chapter yet... 🌸💌"*.
+- **🎵 Chill & Lofi**: *"Warm coffee, soft lofi chords, and another golden spin around the sun 🎧☕"*.
+
+### Interactive Wish Utilities:
+- **Live Search**: Instant keyword and tag filtering across all wishes.
+- **AI Sparkle Remix**: One-click dynamic injection of celebration sparkles and emojis.
+- **Put in 3D Box**: Send any wish directly into the 3D gift box on the canvas above!
+- **1-Click Copy**: Rich formatted wish text copied with clipboard confetti.
+
+---
+
+## 💌 Viral Shareable 3D Gift Link & Keepsake Card
+
+### 🌐 Personalized Shareable URL Generator
+Generate an instant, unique URL to share on **WhatsApp, X (Twitter), Telegram, iMessage, or Email**:
+```
+https://your-domain.vercel.app/birthday?to=Sophia&from=Alex&age=21&theme=royal-gold&gift=cake&msg=You+are+the+best!
+```
+- When the recipient opens the link, they receive a customized welcome banner and get to unbox their personalized 3D gift and blow out their candles!
+
+### 📜 Golden Keepsake Greeting Card
+- Ornate golden borders, royal wax seal, and personalized typography.
+- Ready to print or copy formatted text for Instagram / WhatsApp stories.
 
 ---
 
 ## 🚀 Quick Start (Local Development)
 
-### 1. Clone & Install Dependencies
+### 1. Prerequisites
+- Node.js 18+ or 20+
+- npm 9+
+
+### 2. Run Development Server
 
 ```bash
-git clone <your-repo-url>
+# Clone the repository
+git clone https://github.com/dev060104/deva.git
 cd deva-1
+
+# Install dependencies (including Three.js & Lucide)
 npm install
-```
 
-### 2. Run Local Development Server
-
-```bash
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 3. Build & Production Test
-
-```bash
-npm run build
-npm start
-```
+Open [http://localhost:3000/birthday](http://localhost:3000/birthday) to view the 3D Birthday Experience.
 
 ---
 
 ## 🐙 Step-by-Step GitHub Push Guide
 
-To push this repository to your GitHub account:
-
-### Step 1: Initialize Git & Stage Files (Already initialized locally)
+To push all changes to your GitHub repository:
 
 ```bash
+# 1. Check status
+git status
+
+# 2. Add all modified & new files
 git add .
-git commit -m "feat: complete QuizMaster AI deployment release with Next.js, Wikipedia engine & Interview simulator"
-```
 
-### Step 2: Create a New GitHub Repository
+# 3. Commit with descriptive message
+git commit -m "feat: Add 3D Vision Birthday Wishes & Gift experience with Three.js, blowable candles, audio engine and shareable links"
 
-1. Go to [GitHub New Repository](https://github.com/new).
-2. Set Repository Name to `quizmaster-ai` (or your preferred name).
-3. Choose **Public** or **Private**.
-4. Leave "Initialize this repository with a README" **unchecked** (since we already have one).
-5. Click **Create repository**.
-
-### Step 3: Link Local Repository & Push to Main
-
-Run the following commands in your terminal:
-
-```bash
-# Rename default branch to main if needed
-git branch -M main
-
-# Add your GitHub repository remote URL
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/quizmaster-ai.git
-
-# Push code to GitHub
-git push -u origin main
+# 4. Push to main branch
+git push origin main
 ```
 
 ---
 
 ## 📐 Step-by-Step Vercel Deployment Guide
 
-QuizMaster AI is pre-configured with `vercel.json` for zero-configuration Vercel deployment.
+This project is configured with `vercel.json` for automatic zero-config builds on Vercel.
 
-### Option A: Deployment via Vercel Dashboard (Recommended)
+### Option A: Automatic Git Deploy (Already Connected)
+Whenever you run `git push origin main`, Vercel automatically detects the push, initiates `npm run build`, and deploys the live update to your production domain!
 
-1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and log in.
-2. Click **"Add New..."** -> **"Project"**.
-3. Select your GitHub repository (`quizmaster-ai`).
-4. **Framework Preset**: Next.js (Auto-detected).
-5. **Root Directory**: `./` (Default).
-6. *(Optional)* Add Environment Variables if using a global server API key:
-   - Name: `OPENAI_API_KEY`
-   - Value: `your-sk-key`
-7. Click **Deploy**. Vercel will build and deploy your application in under 60 seconds with a free HTTPS URL!
-
-### Option B: Deployment via Vercel CLI
-
+### Option B: Deploy via Vercel CLI
 ```bash
-# Install Vercel CLI globally
+# Install Vercel CLI
 npm i -g vercel
 
-# Login to Vercel
-vercel login
-
-# Deploy to preview
+# Deploy preview
 vercel
 
 # Deploy to production
 vercel --prod
 ```
 
+### Option C: Import via Vercel Dashboard
+1. Go to [vercel.com](https://vercel.com) and log in.
+2. Click **"Add New Project"** and select repository `dev060104/deva`.
+3. Framework Preset: **Next.js** (automatically detected).
+4. Click **Deploy**. Your app will be live with full SSL and global CDN in under a minute!
+
 ---
 
-## 🛠️ Project Structure
+## 🛠️ Project Architecture
 
 ```
 deva-1/
 ├── src/
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── ai/route.ts        # Serverless AI engine endpoint
-│   │   │   └── wiki/route.ts      # Serverless Wikipedia REST API proxy
-│   │   ├── custom/page.tsx        # Custom AI quiz page
-│   │   ├── interview/page.tsx     # Mock interview simulator page
-│   │   ├── quiz/page.tsx          # Quiz player page
-│   │   ├── stats/page.tsx         # User analytics dashboard
-│   │   ├── wikipedia/page.tsx     # Wikipedia engine page
-│   │   ├── globals.css            # Dark theme styles & Tailwind v4
-│   │   ├── layout.tsx             # Root layout with metadata
-│   │   └── page.tsx               # Main Dashboard & Category Explorer
+│   │   ├── birthday/
+│   │   │   └── page.tsx               # 🎁 3D Birthday Experience Page (with URL query support)
+│   │   ├── earthquake/page.tsx        # 🌋 SeismoAI Earthquake Hazard Predictor
+│   │   ├── quiz/page.tsx              # 🧠 QuizMaster AI Engine
+│   │   ├── wikipedia/page.tsx         # 🌐 Wikipedia Explorer & Auto Quizzer
+│   │   ├── interview/page.tsx         # 💼 STAR Interview Prep Simulator
+│   │   ├── custom/page.tsx            # ⚡ Custom AI Quiz Builder
+│   │   ├── stats/page.tsx             # 📊 Analytics & Performance Dashboard
+│   │   ├── layout.tsx                 # Root layout with dark mode
+│   │   └── page.tsx                   # Main Multi-App Portal Launchpad
 │   ├── components/
-│   │   ├── AITutorDrawer.tsx      # Slide-over AI Q&A tutor
-│   │   ├── CustomQuizBuilder.tsx  # Custom text prompt quiz generator
-│   │   ├── Footer.tsx             # Global footer with platform links
-│   │   ├── InterviewSimulator.tsx # Mock interview practice UI
-│   │   ├── Navbar.tsx             # Sticky header with navigation & streaks
-│   │   ├── QuizEngine.tsx         # Core interactive player (Timed, Survival, Flashcards)
-│   │   ├── SettingsModal.tsx      # API key & audio settings modal
-│   │   ├── StatsDashboard.tsx     # Analytics graphs & bookmark review
-│   │   └── WikipediaExplorer.tsx  # Wikipedia search & auto quiz generator
+│   │   ├── birthday/
+│   │   │   ├── Birthday3DScene.tsx    # 🌟 Three.js WebGL Canvas (Box, Cake, Candles, Fireworks)
+│   │   │   ├── TrendingWishesSection.tsx # 🔥 40+ Categorized Wishes & AI Remix
+│   │   │   ├── ShareGiftModal.tsx     # 💌 Viral Share URL Generator & Social Sharers
+│   │   │   └── GreetingCardModal.tsx  # 📜 Ornate Golden Keepsake Card & Print View
+│   │   └── Navbar.tsx                 # Header navigation with 3D Birthday glowing link
 │   └── lib/
-│       ├── aiEngine.ts            # Built-in & API AI synthesis engine
-│       ├── categories.ts          # Knowledge taxonomy definitions
-│       ├── questionBank.ts        # Built-in question database
-│       ├── storage.ts             # LocalStorage stats & settings helper
-│       ├── types.ts               # TypeScript data models
-│       └── wikipedia.ts           # Wikipedia REST API search & parser
-├── vercel.json                    # Vercel deployment configuration
-├── package.json                   # Dependencies & scripts
-└── README.md                      # Comprehensive documentation
+│       └── birthdayAudio.ts           # 🎶 Synthesized Web Audio API Engine
+├── vercel.json                        # Vercel deployment configuration
+├── package.json                       # Dependencies (three, canvas-confetti, lucide-react)
+└── README.md                          # Comprehensive documentation
 ```
 
 ---
 
 ## 📜 License
 
-MIT License. Designed and engineered for high-performance knowledge exploration and interview preparation.
+MIT License. Designed & crafted with love for magical birthday celebrations and 3D visual experiences.
